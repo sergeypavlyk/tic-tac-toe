@@ -1,9 +1,12 @@
 // styles for game
 document.body.style = "background-image: url(iphone.png); background-repeat: no-repeat; background-size: 500px; background-position: top 10px center; padding-top: 150px";
 const gameArea = document.querySelector('#root');
-gameArea.style = "width: 309.6px; height: 308px; background-color: blue; box-sizing: border-box; margin: 0 auto; border-radius: 10px";
+gameArea.style = "width: 309.6px; height: 308px; background-color: blue; box-sizing: border-box; margin: 0 auto; border-radius: 10px; position: relative";
 const changeGamerText = document.createElement("h1");
 document.body.append(changeGamerText);
+const progress = document.createElement("aside");
+progress.style = "height: 0%; width: 1%; position: absolute; left: 0; bottom: 0";
+document.body.append(progress);
 changeGamerText.style = "font-size: 40px; font-weight: 500; text-align: center; color: red; font-family: sans-serif";
 const restart = document.createElement("button");
 document.body.append(restart);
@@ -49,11 +52,14 @@ let move = 0;
 let gamerText = `${gamer}'s move now`;
 changeGamerText.innerHTML = gamerText;
 
-
+let progressPercent = 0;
 for (let i = 0; i < clickAreas.length; i++) clickAreas[i].addEventListener('click', e => inputValue(e));
 
 const inputValue = e => {
   let num = e.target.id;
+  progressPercent += 11.1111111;
+  progress.style = `height: ${progressPercent}%; width: 1%; position: absolute; left: 0; bottom: 0; background-color: rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+  console.log(progress.style)
 
   if (e.target.innerHTML === '') {
     e.target.innerHTML = gamer;
@@ -68,6 +74,7 @@ const inputValue = e => {
     (inputsX.length > 2 || inputsO.length > 2) &&
     (checkWinner(inputsX, num) || checkWinner(inputsO, num))
   ) {
+    progress.style ="height: 100%; width: 1%; position: absolute; left: 0; bottom: 0; background-color: green";
     alert(`${gamer} Win!!!`);
     restartGame();
   }
@@ -109,6 +116,8 @@ const checkWinner = (arr, num) => {
 
 
 const restartGame = () => {
+  progressPercent = 0;
+  progress.style = "height: 0%; width: 1%; position: absolute; left: 0; bottom: 0";
   const clickAreas = document.querySelectorAll('.item');
   for (let i = 0; i < clickAreas.length; i++) {
     clickAreas[i].innerHTML = '';
